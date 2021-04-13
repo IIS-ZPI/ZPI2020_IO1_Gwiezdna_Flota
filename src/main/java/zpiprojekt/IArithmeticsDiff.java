@@ -2,6 +2,6 @@ package zpiprojekt;
 
 public interface IArithmeticsDiff {
     //Funkcja do odejmowania
-    double Difference(double A, double B);
-
+    Double Difference(double A, double B);
+    // add comment 
 }

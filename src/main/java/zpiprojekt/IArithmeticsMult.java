@@ -1,5 +1,7 @@
 package zpiprojekt;
 
 public interface IArithmeticsMult {
-	double Multiplication(double a,double b);
+	// Itrerface for multiplication
+	// Created by @Anteq638 
+	double multiplication(double a,double b);
 }
