@@ -1,13 +1,24 @@
 package zpiprojekt;
 
+import zpiprojekt.nbp.url.URLCreator;
+
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.Calendar;
+import java.util.Currency;
+import java.util.Locale;
 
-public class App
-{
-    public static void main( String[] args ) throws IOException {
-        System.out.println(NBPConnector.readJsonTable("http://api.nbp.pl/api/exchangerates/rates/a/gbp/last/10/?format=json"));
-//        new NBPConnector("http://api.nbp.pl/api/exchangerates/rates/c/usd/2016-04-04/?format=json").readJsonTable();
-//        System.out.println( NBPConnector.readJsonPrices("http://api.nbp.pl/api/cenyzlota/last/30/?format=json"));
+public class App {
+	public static void main(String[] args) throws IOException {
 
-    }
+		LocalDateTime dateFrom = LocalDateTime.now().minusDays(45);
+		LocalDateTime dateTo = LocalDateTime.now();
+
+		URLCreator urlCreator = new URLCreator()
+				.setCurrency(Currency.getInstance(Locale.UK))
+				.setDateFrom(dateFrom)
+				.setDateTo(dateTo);
+        System.out.println(NBPConnector.readJsonTable(urlCreator.create()));
+
+	}
 }
