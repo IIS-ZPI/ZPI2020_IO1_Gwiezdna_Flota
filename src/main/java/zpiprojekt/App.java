@@ -10,15 +10,6 @@ import java.util.Locale;
 
 public class App {
 	public static void main(String[] args) throws IOException {
-
-		LocalDateTime dateFrom = LocalDateTime.now().minusDays(45);
-		LocalDateTime dateTo = LocalDateTime.now();
-
-		URLCreator urlCreator = new URLCreator()
-				.setCurrency(Currency.getInstance(Locale.UK))
-				.setDateFrom(dateFrom)
-				.setDateTo(dateTo);
-        System.out.println(NBPConnector.readJsonTable(urlCreator.create()));
-
+      UIClient.runUI();
 	}
 }
