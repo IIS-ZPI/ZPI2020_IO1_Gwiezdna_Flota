@@ -1,4 +1,4 @@
-package zpiprojekt.nbp;
+package zpiprojekt.nbp.data;
 
 import java.util.ArrayList;
 

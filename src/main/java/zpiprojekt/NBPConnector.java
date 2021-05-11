@@ -1,9 +1,8 @@
 package zpiprojekt;
 
 import com.google.gson.Gson;
-import zpiprojekt.nbp.Price;
-import zpiprojekt.nbp.Rate;
-import zpiprojekt.nbp.RateTable;
+import zpiprojekt.nbp.data.Price;
+import zpiprojekt.nbp.data.RateTable;
 
 import java.io.BufferedReader;
 import java.io.IOException;
