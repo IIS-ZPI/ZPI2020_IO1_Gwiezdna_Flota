@@ -1,6 +1,9 @@
 package zpiprojekt;
+import java.util.Scanner;
 
 public class UIClient {
+    private static Scanner in = new Scanner(System.in);
+
     public static void runUI(){
         
     }
