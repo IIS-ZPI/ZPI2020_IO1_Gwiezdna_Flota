@@ -96,7 +96,7 @@ public class UIClient {
      * miary statystyczne #48
      */
     private static void actionStatisticalMeasures(){
-
+        String currency;
     }
     private static void showDataOptions()
     {
