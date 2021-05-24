@@ -96,8 +96,31 @@ public class UIClient {
      * Interfejs użytkownika: 
      * miary statystyczne #48
      */
-    private static void actionStatisticalMeasures(){
+    private static int actionStatisticalMeasures(){
+        Currency currency;
+        System.out.println("Podaj walutę w formacie ISO 4217 zawierającą trzyliterowy kod np: \"PLN\": ");
+        try {
+            String userInput = in.nextLine();
+            currency = Currency.getInstance(userInput);
+        } catch (Exception e) {
+            System.out.println("Niepoprawny kod!");
+            return 1;
+        }
+        showDataOptions();
+        String userInput = in.nextLine();
+        int timeInterval = 0;
+        try {
+            timeInterval = Integer.parseInt(userInput);
+        } catch (NumberFormatException e) {
+            System.out.println("Błąd!  Wpisano nieprawidłowe dane.");
+            return 2;
+        }
+        if (timeInterval != 1 && timeInterval != 2 && timeInterval != 3 && timeInterval != 4 && timeInterval != 5) {
+            System.out.println("Zly przedział. Podaj jeszcze raz!");
+            return 3;
+        }
 
+        return 0;
     }
 
     private static void showDataOptions() {
