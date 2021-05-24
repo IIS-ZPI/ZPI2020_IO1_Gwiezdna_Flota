@@ -98,6 +98,17 @@ public class UIClient {
     private static void actionStatisticalMeasures(){
 
     }
+    private static void showDataOptions()
+    {
+        System.out.println("" +
+                "1 - 1 tygodnie\n" +
+                "2 - 2 tygodnie\n" +
+                "3 - 1 miesiąc\n" +
+                "4 - pół roku\n" +
+                "5 - 1 rok\n"
+        );
+    }
+
 
     /**
      * Interfejs użytkownika: 
