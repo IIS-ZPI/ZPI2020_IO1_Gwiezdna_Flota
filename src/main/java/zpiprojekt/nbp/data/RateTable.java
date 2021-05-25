@@ -1,6 +1,5 @@
 package zpiprojekt.nbp.data;
 
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -23,47 +22,42 @@ public class RateTable {
 		}
 	}
 
-	//	public Double getDominant() {
-//		int occurrences = 0;
-//		int maxOccurrences = 0;
-//		double dominant = rates.get(0).mid;
-//		double maxDominant = dominant;
-//
-//		Collections.sort(rates);
-//		for (Rate rate : rates) {
-//			if(dominant == rate.mid){
-//				occurrences ++;
-//			}
-//			else{
-//				if(maxOccurrences < occurrences){
-//					maxDominant = dominant;
-//					maxOccurrences = occurrences;
-//				}
-//				dominant = rate.mid;
-//				occurrences = 1;
-//			}
-//		}
-//
-//		return maxDominant;
-//	}
+	public DoubleSummaryStatistics getStatistics() {
+		return rates.stream()
+				.mapToDouble((x) -> x.mid)
+				.summaryStatistics();
+	}
+
 	public List<Double> getDominant() {
 		HashMap<Double, Integer> ratesMap = new HashMap<>();
 		for (Rate rate : rates) {
 			Integer key = ratesMap.getOrDefault(rate.mid, 0);
-			ratesMap.put(rate.mid, key+1);
+			ratesMap.put(rate.mid, key + 1);
 		}
 		Integer maxOccurrences = ratesMap.values().stream().max(Integer::compare).orElse(1);
 
-		Map<Double,Integer> map2 = ratesMap.entrySet()
+		Map<Double, Integer> map2 = ratesMap.entrySet()
 				.stream()
 				.filter(map -> map.getValue().intValue() == maxOccurrences)
 				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
-		if (ratesMap.size() == map2.size()){
+		if (ratesMap.size() == map2.size()) {
 			return null;
 		}
 		return new ArrayList<>(map2.keySet());
+	}
 
+	public double getStandardDeviation() {
+		double avg = getStatistics().getAverage();
+		double std = 0.0;
+		for (Rate rate : rates) {
+			std += Math.pow(rate.mid - avg, 2);
+		}
+		return Math.sqrt(std / rates.size());
+	}
+
+	public double getCoefficientOfVariation() {
+		return getStandardDeviation() * getStatistics().getAverage();
 	}
 
 	@Override

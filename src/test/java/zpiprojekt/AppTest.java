@@ -51,19 +51,19 @@ public class AppTest
 
 
     @Test
-    public void testingGetMedian(){
+    public void testingRateTableStatistics(){
 
         LocalDateTime now = LocalDateTime.now();
-        LocalDateTime weekAgo = LocalDateTime.now().minusWeeks(1);
+        LocalDateTime weekAgo = LocalDateTime.now().minusMonths(1);
         String url = new URLCreator().setCurrency(Currency.getInstance("USD")).setDateFrom(weekAgo).setDateTo(now).create();
         try{
             RateTable table = NBPConnector.readJsonTable(url);
             double median = table.getMedian();
-            System.out.println(median);
+            System.out.println("median: "+median);
             List<Double> dominant = table.getDominant();
-            System.out.println(dominant);
-
-
+            System.out.println("dominant: "+dominant);
+            System.out.println("std: "+table.getStandardDeviation());
+            System.out.println("CoefficientOfVariation: "+table.getCoefficientOfVariation());
         } catch (IOException e) {
             e.printStackTrace();
         }
