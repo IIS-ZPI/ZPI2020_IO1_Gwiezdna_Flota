@@ -1,6 +1,6 @@
 package zpiprojekt.nbp.data;
 
-public class Rate {
+public class Rate implements Comparable<Rate>{
 	public String no;
 	public String effectiveDate;
 	public Double mid;
@@ -14,5 +14,10 @@ public class Rate {
 				"mid: "+mid+"\n"+
 				"bid: "+bid+"\n"+
 				"ask: "+ask+"\n\n";
+	}
+
+	@Override
+	public int compareTo(Rate rate) {
+		return Double.compare(this.mid,rate.mid);
 	}
 }
