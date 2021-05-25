@@ -42,7 +42,7 @@ public class RateTable {
 				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
 		if (ratesMap.size() == map2.size()) {
-			return null;
+			return new ArrayList<>();
 		}
 		return new ArrayList<>(map2.keySet());
 	}
