@@ -19,6 +19,8 @@ public class URLCreator {
 	private LocalDateTime dateTo;
 
 	public URLCreator setCurrency(Currency currency) {
+		if(currency.getCurrencyCode().equals("PLN"))
+			throw new IllegalArgumentException("PLN not available!");
 		this.currency = currency;
 		return this;
 	}
