@@ -3,11 +3,17 @@ package zpiprojekt;
 import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Currency;
+import java.util.List;
 import java.util.Scanner;
 
 import org.junit.Test;
+import zpiprojekt.nbp.data.RateTable;
+import zpiprojekt.nbp.url.URLCreator;
 
 public class AppTest 
 {
@@ -43,4 +49,24 @@ public class AppTest
             assertTrue(testingUserInput(words[i]) == 0);
     }
 
+
+    @Test
+    public void testingGetMedian(){
+
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime weekAgo = LocalDateTime.now().minusWeeks(1);
+        String url = new URLCreator().setCurrency(Currency.getInstance("USD")).setDateFrom(weekAgo).setDateTo(now).create();
+        try{
+            RateTable table = NBPConnector.readJsonTable(url);
+            double median = table.getMedian();
+            System.out.println(median);
+            List<Double> dominant = table.getDominant();
+            System.out.println(dominant);
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
 }
