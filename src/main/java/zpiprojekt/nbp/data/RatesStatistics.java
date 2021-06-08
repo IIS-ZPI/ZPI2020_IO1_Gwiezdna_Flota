@@ -54,5 +54,12 @@ public class RatesStatistics {
 		return getStandardDeviation(table) * getStatistics(table).getAverage();
 	}
 
-
+	public static Map<String, String> getAllStatistics(RateTable table){
+		Map<String, String> statsMap = new HashMap<>();
+		statsMap.put("mediana",String.valueOf(getMedian(table)));
+		statsMap.put("dominanta",getDominant(table).toString());
+		statsMap.put("odchylenie standardowe",String.valueOf(getStandardDeviation(table)));
+		statsMap.put("Współczynnik zmienności",String.valueOf(getCoefficientOfVariation(table)));
+		return statsMap;
+	}
 }
