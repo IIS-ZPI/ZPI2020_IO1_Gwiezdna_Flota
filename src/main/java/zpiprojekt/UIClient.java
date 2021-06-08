@@ -71,6 +71,11 @@ public class UIClient {
             System.out.println("Niepoprawny kod!");
             return 1;
         }
+        if(firstCurrency.toString().equals("PLN") || secondCurrency.toString().equals("PLN"))
+            return 1;
+        if(firstCurrency.toString().equals(secondCurrency.toString()))
+            return 1;
+
 
         System.out.println("Podaj przedział czasowy \n 1 - miesiac \n 2 - kwartał");
         String userInput = in.nextLine();
@@ -110,6 +115,8 @@ public class UIClient {
             System.out.println("Niepoprawny kod!");
             return 1;
         }
+        if(currency.toString().equals("PLN"))
+            return 1;
 
         showDataOptions();
 

@@ -7,56 +7,25 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import java.time.LocalDateTime;
+
+import java.util.ArrayList;
+import java.util.Currency;
+import java.util.List;
+import java.util.Scanner;
+
+import org.junit.Test;
+import zpiprojekt.nbp.data.RateTable;
+import zpiprojekt.nbp.url.URLCreator;
+
 import java.util.Currency;
 import java.util.Scanner;
 
 import org.junit.Test;
 import zpiprojekt.nbp.ActionSessions;
 
+
 public class AppTest 
 {
-    @Test
-    public void shouldAnswerWithTrue()
-    {
-        assertTrue( true );
-    }
-
-
-    private int testingUserInput(String inputText){
-        InputStream in = new ByteArrayInputStream(inputText.getBytes());
-
-        // Make backup of System.in
-        InputStream systemInBackup = System.in;
-
-        System.setIn(in);
-        Scanner sc = new Scanner(System.in);
-        String nextLine = sc.nextLine();
-        sc.close();
-
-        // Restore original System.in
-        System.setIn(systemInBackup);
-
-        return inputText.compareTo(nextLine);
-    }
-
-    @Test
-    public void testingUserInputText(){
-        String[] words = {"ads", "dabv", "12332t", "dfvhheeyut", "zxvvbcmn"};
-
-        for(int i = 0; i < words.length; ++i)
-            assertTrue(testingUserInput(words[i]) == 0);
-    }
-    @Test
-    public void testingActionSessions() throws IOException {
-        LocalDateTime weekAgo = LocalDateTime.now().minusWeeks(1);
-        LocalDateTime dayAgo = LocalDateTime.now().minusDays(1);
-        ActionSessions sessions = new ActionSessions(Currency.getInstance("USD"),weekAgo);
-        System.out.println("Growth sessions: " + sessions.getGrowthSessions());
-        System.out.println("Decreasing sessions: " + sessions.getDecreaseSessions());
-        System.out.println("Unchanged sessions: " + sessions.getUnchangedSessions());
-    }
-
-
 
     private InputStream writeStringAsSystemIn(String toWrite){
         // Create new InputStream that write string
@@ -101,7 +70,7 @@ public class AppTest
 
     @Test 
     public void testUIClientActionDistributionChanges004(){
-        String toWrite = "EUR\nPLN";
+        String toWrite = "EUR\nPLN\n1\n";
         InputStream in = writeStringAsSystemIn(toWrite);
         UIClient.setScannerIn(in);
         int retVal = UIClient.actionDistributionChanges();
@@ -111,7 +80,7 @@ public class AppTest
 
     @Test 
     public void testUIClientActionDistributionChanges005(){
-        String toWrite = "EUR\nEUR";
+        String toWrite = "EUR\nEUR\n1\n";
         InputStream in = writeStringAsSystemIn(toWrite);
         UIClient.setScannerIn(in);
         int retVal = UIClient.actionDistributionChanges();
@@ -141,7 +110,16 @@ public class AppTest
 
     @Test 
     public void testUIClientActionDistributionChanges008(){
-        String toWrite = "EUR\nUSD\n435346374";
+        String toWrite = "EUR\nUSD\n4353463N74";
+        InputStream in = writeStringAsSystemIn(toWrite);
+        UIClient.setScannerIn(in);
+        int retVal = UIClient.actionDistributionChanges();
+
+        assertTrue(retVal == 2);
+    }
+    @Test
+    public void testUIClientActionDistributionChanges009(){
+        String toWrite = "EUR\nUSD\n\n";
         InputStream in = writeStringAsSystemIn(toWrite);
         UIClient.setScannerIn(in);
         int retVal = UIClient.actionDistributionChanges();
@@ -182,11 +160,11 @@ public class AppTest
         UIClient.setScannerIn(in);
         int retVal = UIClient.actionStatisticalMeasures();
 
-        assertTrue(retVal == 2);
+        assertTrue(retVal == 3);
     }
     @Test 
     public void testUIClientActionStatisticalMeasures004(){
-        String toWrite = "USD\n5";
+        String toWrite = "USD\n5\n";
         InputStream in = writeStringAsSystemIn(toWrite);
         UIClient.setScannerIn(in);
         int retVal = UIClient.actionStatisticalMeasures();
