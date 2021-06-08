@@ -7,10 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDateTime;
 
-import java.util.ArrayList;
-import java.util.Currency;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 import org.junit.Test;
 import zpiprojekt.nbp.data.RateTable;
@@ -71,18 +68,21 @@ public class AppTest
 
     @Test
     public void testingRateTableStatistics(){
-
-        LocalDateTime now = LocalDateTime.now();
-        LocalDateTime weekAgo = LocalDateTime.now().minusMonths(1);
-        String url = new URLCreator().setCurrency(Currency.getInstance("USD")).setDateFrom(weekAgo).setDateTo(now).create();
         try{
-            RateTable table = NBPConnector.readJsonTable(url);
-            double median = RatesStatistics.getMedian(table);
+
+
+            RatesStatistics ratesStatistics = new RatesStatistics(Currency.getInstance("USD"),2);
+            double median = ratesStatistics.getMedian();
             System.out.println("median: "+median);
-            List<Double> dominant = RatesStatistics.getDominant(table);
+            List<Double> dominant = ratesStatistics.getDominant();
             System.out.println("dominant: "+dominant);
-            System.out.println("std: "+RatesStatistics.getStandardDeviation(table));
-            System.out.println("CoefficientOfVariation: "+RatesStatistics.getCoefficientOfVariation(table));
+            System.out.println("std: "+ratesStatistics.getStandardDeviation());
+            System.out.println("CoefficientOfVariation: "+ratesStatistics.getCoefficientOfVariation());
+
+            System.out.println("\n\n");
+            for (Map.Entry<String, String> entry : ratesStatistics.getAllStatistics().entrySet()) {
+                System.out.println(entry.getKey() + ":" + entry.getValue());
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

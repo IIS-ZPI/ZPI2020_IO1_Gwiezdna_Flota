@@ -1,10 +1,51 @@
 package zpiprojekt.nbp.data;
 
+import zpiprojekt.NBPConnector;
+import zpiprojekt.nbp.url.URLCreator;
+
+import java.io.IOException;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class RatesStatistics {
-	public static double getMedian(RateTable table) {
+
+	private Currency currency;
+	private RateTable table;
+	private LocalDateTime  dateFrom;
+	public RatesStatistics(Currency currency,int interval)throws IOException{
+		this.currency = currency;
+		intervalToDate(interval);
+		String url = new URLCreator().setCurrency(currency).setDateFrom(dateFrom).setDateTo(LocalDateTime.now()).create();
+		this.table = NBPConnector.readJsonTable(url);
+	}
+	private void intervalToDate(int interval)
+	{
+		dateFrom = LocalDateTime.now();
+		switch (interval)
+		{
+			case 1:
+				dateFrom = dateFrom.minusWeeks(1);
+				break;
+			case 2:
+				dateFrom = dateFrom.minusWeeks(2);
+				break;
+			case 3:
+				dateFrom = dateFrom.minusMonths(1);
+				break;
+			case 4:
+				dateFrom = dateFrom.minusMonths(6);
+				break;
+			case 5:
+				dateFrom = dateFrom.minusYears(1);
+				break;
+		}
+	}
+
+	public  double getMedian() {
 		Collections.sort(table.rates);
 		int len = table.rates.size();
 		if (len % 2 != 0) {
@@ -16,13 +57,13 @@ public class RatesStatistics {
 		}
 	}
 
-	public static DoubleSummaryStatistics getStatistics(RateTable table) {
+	public  DoubleSummaryStatistics getStatistics() {
 		return table.rates.stream()
 				.mapToDouble((x) -> x.mid)
 				.summaryStatistics();
 	}
 
-	public static List<Double> getDominant(RateTable table) {
+	public  List<Double> getDominant() {
 		HashMap<Double, Integer> ratesMap = new HashMap<>();
 		for (Rate rate : table.rates) {
 			Integer key = ratesMap.getOrDefault(rate.mid, 0);
@@ -41,8 +82,8 @@ public class RatesStatistics {
 		return new ArrayList<>(map2.keySet());
 	}
 
-	public static double getStandardDeviation(RateTable table) {
-		double avg = getStatistics(table).getAverage();
+	public  double getStandardDeviation() {
+		double avg = getStatistics().getAverage();
 		double std = 0.0;
 		for (Rate rate : table.rates) {
 			std += Math.pow(rate.mid - avg, 2);
@@ -50,21 +91,25 @@ public class RatesStatistics {
 		return Math.sqrt(std / table.rates.size());
 	}
 
-	public static double getCoefficientOfVariation(RateTable table) {
-		return getStandardDeviation(table) * getStatistics(table).getAverage();
+	public double getCoefficientOfVariation() {
+		return getStandardDeviation() * getStatistics().getAverage();
 	}
 
-	public static Map<String, String> getAllStatistics(RateTable table) {
+	public Map<String, String> getAllStatistics() {
+		DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols();
+		otherSymbols.setDecimalSeparator('.');
+		DecimalFormat df = new DecimalFormat("#.####",otherSymbols);
 		Map<String, String> statsMap = new HashMap<>();
-		statsMap.put("mediana", String.valueOf(getMedian(table)));
-		StringBuilder str = new StringBuilder();
-		String dominant = getDominant(table).toString()
-				.replace("[", " ")
-				.replace("]", " ");
-
-		statsMap.put("dominanta", dominant);
-		statsMap.put("odchylenie standardowe", String.valueOf(getStandardDeviation(table)));
-		statsMap.put("Współczynnik zmienności", String.valueOf(getCoefficientOfVariation(table)));
+		statsMap.put("mediana", df.format(getMedian()));
+		StringBuilder dominant = new StringBuilder();
+		for (Double d :getDominant()){
+			dominant.append(df.format(d)).append(" ");
+		}
+		if (dominant.toString().isEmpty())
+			dominant.append("brak");
+		statsMap.put("dominanta", dominant.toString());
+		statsMap.put("odchylenie standardowe", df.format(getStandardDeviation()));
+		statsMap.put("Współczynnik zmienności", df.format(getCoefficientOfVariation()));
 		return statsMap;
 	}
 }
