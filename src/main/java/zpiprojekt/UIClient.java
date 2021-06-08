@@ -1,5 +1,9 @@
 package zpiprojekt;
 
+import zpiprojekt.nbp.ActionSessions;
+
+import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.Scanner;
 import java.io.InputStream;
 import java.util.Currency;
@@ -172,7 +176,16 @@ public class UIClient {
             return 3;
         }
 
-        // somefunction(firstCode, timeInterval);
+        ActionSessions actionSessions = new ActionSessions(currency, timeInterval);
+        System.out.println("\n------------------------------------\n");
+        try {
+            System.out.println("Sesje wzrostowe: " + actionSessions.getGrowthSessions());
+            System.out.println("Sesje spadkowe: " + actionSessions.getDecreaseSessions());
+            System.out.println("Sesje bez zmian: " + actionSessions.getUnchangedSessions());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println("\n------------------------------------\n");
         return 0;
     }
 }
