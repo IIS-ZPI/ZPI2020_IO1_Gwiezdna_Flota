@@ -1,11 +1,16 @@
 package zpiprojekt;
 
 import java.util.Scanner;
+import java.io.InputStream;
 import java.util.Currency;
 
 
 public class UIClient {
     private static Scanner in = new Scanner(System.in);
+
+    public static void setScannerIn(InputStream in){
+        UIClient.in = new Scanner(in);
+    }
 
     /**
      * Interfejs użytkownika: wybór akcji #50
@@ -46,10 +51,10 @@ public class UIClient {
      * 2 - gdy podano nieprawidlowy przedzial czasowy, np. string abc zamiast liczby
      * 3 - gdy podano nieprawidlowa liczbe oznaczajaca przedzial czasowy
      */
-    private static int actionDistributionChanges() {
+    public static int actionDistributionChanges() {
         Currency firstCurrency;
         Currency secondCurrency;
-        System.out.println("Podaj pierwszą walutę w formacie ISO 4217 zawierającą trzyliterowy kod np: \"PLN\": ");
+        System.out.println("Podaj pierwszą walutę w formacie ISO 4217 zawierającą trzyliterowy kod np: \"USD\": ");
         try {
             String userInput = in.nextLine();
             firstCurrency = Currency.getInstance(userInput);
@@ -58,7 +63,7 @@ public class UIClient {
             return 1;
         }
 
-        System.out.println("Podaj drugą walutę w formacie ISO 4217 zawierającą trzyliterowy kod np: \"PLN\": ");
+        System.out.println("Podaj drugą walutę w formacie ISO 4217 zawierającą trzyliterowy kod np: \"USD\": ");
         try {
             String userInput = in.nextLine();
             secondCurrency = Currency.getInstance(userInput);
@@ -66,6 +71,11 @@ public class UIClient {
             System.out.println("Niepoprawny kod!");
             return 1;
         }
+        if(firstCurrency.toString().equals("PLN") || secondCurrency.toString().equals("PLN"))
+            return 1;
+        if(firstCurrency.toString().equals(secondCurrency.toString()))
+            return 1;
+
 
         System.out.println("Podaj przedział czasowy \n 1 - miesiac \n 2 - kwartał");
         String userInput = in.nextLine();
@@ -95,9 +105,9 @@ public class UIClient {
      * Interfejs użytkownika: 
      * miary statystyczne #48
      */
-    private static int actionStatisticalMeasures(){
+    public static int actionStatisticalMeasures(){
         Currency currency;
-        System.out.println("Podaj walutę w formacie ISO 4217 zawierającą trzyliterowy kod np: \"PLN\": ");
+        System.out.println("Podaj walutę w formacie ISO 4217 zawierającą trzyliterowy kod np: \"USD\": ");
         try {
             String userInput = in.nextLine();
             currency = Currency.getInstance(userInput);
@@ -105,6 +115,8 @@ public class UIClient {
             System.out.println("Niepoprawny kod!");
             return 1;
         }
+        if(currency.toString().equals("PLN"))
+            return 1;
 
         showDataOptions();
 
@@ -130,9 +142,9 @@ public class UIClient {
      * Interfejs użytkownika: wyznaczenie ilości sesji wzrostowych, spadkowych i bez
      * zmian #47
      */
-    private static int actionSessions() {
+    public static int actionSessions() {
         Currency currency;
-        System.out.println("Podaj walutę w formacie ISO 4217 zawierającą trzyliterowy kod np: \"PLN\": ");
+        System.out.println("Podaj walutę w formacie ISO 4217 zawierającą trzyliterowy kod np: \"USD\": ");
         try {
             String userInput = in.nextLine();
             currency = Currency.getInstance(userInput);
@@ -140,6 +152,10 @@ public class UIClient {
             System.out.println("Niepoprawny kod!");
             return 1;
         }   
+        if(currency.toString().compareTo("PLN") == 0){
+            System.out.println("Niepoprawny kod! Wybierz inną walutę niż PLN.");
+            return 1;
+        }
 
         showDataOptions();
 
@@ -151,7 +167,7 @@ public class UIClient {
             System.out.println("Błąd!  Wpisano nieprawidłowe dane.");
             return 2;
         }
-        if (timeInterval != 1 && timeInterval != 2 && timeInterval != 3 && timeInterval != 4 && timeInterval != 5) {
+        if (timeInterval < 1 || timeInterval > 5){
             System.out.println("Zly przedział. Podaj jeszcze raz!");
             return 3;
         }
