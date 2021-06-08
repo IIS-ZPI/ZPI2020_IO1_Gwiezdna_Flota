@@ -14,6 +14,7 @@ import java.util.Scanner;
 
 import org.junit.Test;
 import zpiprojekt.nbp.data.RateTable;
+import zpiprojekt.nbp.data.RatesStatistics;
 import zpiprojekt.nbp.url.URLCreator;
 
 import java.util.Currency;
@@ -76,12 +77,12 @@ public class AppTest
         String url = new URLCreator().setCurrency(Currency.getInstance("USD")).setDateFrom(weekAgo).setDateTo(now).create();
         try{
             RateTable table = NBPConnector.readJsonTable(url);
-            double median = table.getMedian();
+            double median = RatesStatistics.getMedian(table);
             System.out.println("median: "+median);
-            List<Double> dominant = table.getDominant();
+            List<Double> dominant = RatesStatistics.getDominant(table);
             System.out.println("dominant: "+dominant);
-            System.out.println("std: "+table.getStandardDeviation());
-            System.out.println("CoefficientOfVariation: "+table.getCoefficientOfVariation());
+            System.out.println("std: "+RatesStatistics.getStandardDeviation(table));
+            System.out.println("CoefficientOfVariation: "+RatesStatistics.getCoefficientOfVariation(table));
         } catch (IOException e) {
             e.printStackTrace();
         }

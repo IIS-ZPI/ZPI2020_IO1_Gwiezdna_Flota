@@ -4,7 +4,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class RatesStatistics {
-	public double getMedian(RateTable table) {
+	public static double getMedian(RateTable table) {
 		Collections.sort(table.rates);
 		int len = table.rates.size();
 		if (len % 2 != 0) {
@@ -16,13 +16,13 @@ public class RatesStatistics {
 		}
 	}
 
-	public DoubleSummaryStatistics getStatistics(RateTable table) {
+	public static DoubleSummaryStatistics getStatistics(RateTable table) {
 		return table.rates.stream()
 				.mapToDouble((x) -> x.mid)
 				.summaryStatistics();
 	}
 
-	public List<Double> getDominant(RateTable table) {
+	public static List<Double> getDominant(RateTable table) {
 		HashMap<Double, Integer> ratesMap = new HashMap<>();
 		for (Rate rate : table.rates) {
 			Integer key = ratesMap.getOrDefault(rate.mid, 0);
@@ -41,7 +41,7 @@ public class RatesStatistics {
 		return new ArrayList<>(map2.keySet());
 	}
 
-	public double getStandardDeviation(RateTable table) {
+	public static double getStandardDeviation(RateTable table) {
 		double avg = getStatistics(table).getAverage();
 		double std = 0.0;
 		for (Rate rate : table.rates) {
@@ -50,7 +50,7 @@ public class RatesStatistics {
 		return Math.sqrt(std / table.rates.size());
 	}
 
-	public double getCoefficientOfVariation(RateTable table) {
+	public static double getCoefficientOfVariation(RateTable table) {
 		return getStandardDeviation(table) * getStatistics(table).getAverage();
 	}
 
