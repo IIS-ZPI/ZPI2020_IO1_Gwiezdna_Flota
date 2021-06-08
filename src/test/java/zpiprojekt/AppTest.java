@@ -8,13 +8,11 @@ import java.io.InputStream;
 
 import java.time.LocalDateTime;
 
-import java.util.ArrayList;
-import java.util.Currency;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 import org.junit.Test;
 import zpiprojekt.nbp.data.RateTable;
+import zpiprojekt.nbp.data.RatesStatistics;
 import zpiprojekt.nbp.url.URLCreator;
 
 import java.util.Currency;
@@ -116,6 +114,28 @@ public class AppTest
         int retVal = UIClient.actionDistributionChanges();
 
         assertTrue(retVal == 2);
+    }
+  
+    @Test
+    public void testingRateTableStatistics(){
+        try{
+
+
+            RatesStatistics ratesStatistics = new RatesStatistics(Currency.getInstance("USD"),2);
+            double median = ratesStatistics.getMedian();
+            System.out.println("median: "+median);
+            List<Double> dominant = ratesStatistics.getDominant();
+            System.out.println("dominant: "+dominant);
+            System.out.println("std: "+ratesStatistics.getStandardDeviation());
+            System.out.println("CoefficientOfVariation: "+ratesStatistics.getCoefficientOfVariation());
+
+            System.out.println("\n\n");
+            for (Map.Entry<String, String> entry : ratesStatistics.getAllStatistics().entrySet()) {
+                System.out.println(entry.getKey() + ":" + entry.getValue());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     @Test
     public void testUIClientActionDistributionChanges009(){
@@ -253,7 +273,6 @@ public class AppTest
         InputStream in = writeStringAsSystemIn(toWrite);
         UIClient.setScannerIn(in);
         int retVal = UIClient.actionSessions();
-
         assertTrue(retVal == 1);
     }
 }

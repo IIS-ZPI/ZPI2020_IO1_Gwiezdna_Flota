@@ -1,9 +1,16 @@
 package zpiprojekt;
 
+
+import zpiprojekt.nbp.data.RatesStatistics;
+
+import java.io.IOException;
+import java.util.Map;
+
 import zpiprojekt.nbp.ActionSessions;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+
 import java.util.Scanner;
 import java.io.InputStream;
 import java.util.Currency;
@@ -135,6 +142,18 @@ public class UIClient {
         if (timeInterval < 1 || timeInterval > 5) {
             System.out.println("Zly przedział czasowy!");
             return 3;
+        }
+        try{
+            RatesStatistics statistics = new RatesStatistics(currency,timeInterval);
+            statistics.getAllStatistics();
+            for (Map.Entry<String, String> entry : statistics.getAllStatistics().entrySet()) {
+                System.out.println(entry.getKey() + " : " + entry.getValue());
+            }
+            System.out.println("");
+
+        }catch(IOException e){
+            System.out.println("Błąd! Nieudane połączenie z NBP!");
+            return 4;
         }
 
         // somefunction(firstCode, timeInterval);
