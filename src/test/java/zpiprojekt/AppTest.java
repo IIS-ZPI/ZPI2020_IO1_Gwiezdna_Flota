@@ -101,7 +101,7 @@ public class AppTest
 
     @Test 
     public void testUIClientActionDistributionChanges004(){
-        String toWrite = "EUR\nPLN";
+        String toWrite = "EUR\nPLN\n1\n";
         InputStream in = writeStringAsSystemIn(toWrite);
         UIClient.setScannerIn(in);
         int retVal = UIClient.actionDistributionChanges();
@@ -111,7 +111,7 @@ public class AppTest
 
     @Test 
     public void testUIClientActionDistributionChanges005(){
-        String toWrite = "EUR\nEUR";
+        String toWrite = "EUR\nEUR\n1\n";
         InputStream in = writeStringAsSystemIn(toWrite);
         UIClient.setScannerIn(in);
         int retVal = UIClient.actionDistributionChanges();
@@ -141,7 +141,16 @@ public class AppTest
 
     @Test 
     public void testUIClientActionDistributionChanges008(){
-        String toWrite = "EUR\nUSD\n435346374";
+        String toWrite = "EUR\nUSD\n4353463N74";
+        InputStream in = writeStringAsSystemIn(toWrite);
+        UIClient.setScannerIn(in);
+        int retVal = UIClient.actionDistributionChanges();
+
+        assertTrue(retVal == 2);
+    }
+    @Test
+    public void testUIClientActionDistributionChanges009(){
+        String toWrite = "EUR\nUSD\n\n";
         InputStream in = writeStringAsSystemIn(toWrite);
         UIClient.setScannerIn(in);
         int retVal = UIClient.actionDistributionChanges();
@@ -182,11 +191,11 @@ public class AppTest
         UIClient.setScannerIn(in);
         int retVal = UIClient.actionStatisticalMeasures();
 
-        assertTrue(retVal == 2);
+        assertTrue(retVal == 3);
     }
     @Test 
     public void testUIClientActionStatisticalMeasures004(){
-        String toWrite = "USD\n5";
+        String toWrite = "USD\n5\n";
         InputStream in = writeStringAsSystemIn(toWrite);
         UIClient.setScannerIn(in);
         int retVal = UIClient.actionStatisticalMeasures();
