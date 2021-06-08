@@ -136,7 +136,8 @@ public class AppTest
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+    }
+    @Test
     public void testUIClientActionDistributionChanges009(){
         String toWrite = "EUR\nUSD\n\n";
         InputStream in = writeStringAsSystemIn(toWrite);
