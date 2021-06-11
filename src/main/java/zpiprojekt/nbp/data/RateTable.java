@@ -73,14 +73,5 @@ public class RateTable {
 				"rates:\n" + rates.toString();
 	}
 
-	public LinkedHashMap<String, Double> getChangeTable(){
-
-		LinkedHashMap<String, Double> hashMap = new LinkedHashMap<>();
-		for(int i=1; i<rates.size(); i++){
-			Double diff = (rates.get(i).mid - rates.get(i-1).mid) / rates.get(i -1).mid * 100;
-			hashMap.put(rates.get(i).effectiveDate, Math.abs(diff));
-		}
-		return hashMap;
-	}
 }
 
