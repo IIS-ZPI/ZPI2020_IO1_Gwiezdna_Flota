@@ -1,5 +1,7 @@
 package zpiprojekt;
 
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Scanner;
 import java.io.InputStream;
 import java.util.Currency;
@@ -92,7 +94,7 @@ public class UIClient {
             return 3;
         }
 
-        // somefunction(firstCode, secondCode, timeInterval);
+
         return 0;
     }
 
