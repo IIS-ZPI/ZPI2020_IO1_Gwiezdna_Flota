@@ -12,9 +12,9 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 public class ActionDistribution {
-   static LinkedHashMap<Range, Integer> map = new LinkedHashMap();
+    static LinkedHashMap<Range, Integer> map = new LinkedHashMap();
 
-   static public LinkedList<Double> getDistribution(Currency firstCurrency, Currency secondCurrency, int timeInterval) throws IOException {
+    static public LinkedList<Double> getDistribution(Currency firstCurrency, Currency secondCurrency, int timeInterval) throws IOException {
         LocalDateTime dateTo = LocalDateTime.now();
         LocalDateTime dateFrom = null;
         if (timeInterval == 1)
@@ -42,52 +42,36 @@ public class ActionDistribution {
             }
         };
         LinkedList<Double> currencyList = new LinkedList<>();
-       firstTable.rates.sort(comparator);
-       secondTable.rates.sort(comparator);
-       for(int i=0; i<firstTable.rates.size(); i++){
-           currencyList.add(firstTable.rates.get(i).mid / secondTable.rates.get(i).mid);
-       }
+        firstTable.rates.sort(comparator);
+        secondTable.rates.sort(comparator);
+        for (int i = 0; i < firstTable.rates.size(); i++) {
+            currencyList.add(firstTable.rates.get(i).mid / secondTable.rates.get(i).mid);
+        }
 
-       LinkedList<Double> differenceList = new LinkedList<>();
-       for(int i=1; i<currencyList.size(); i++){
-           differenceList.add(currencyList.get(i) - currencyList.get(i - 1));
-       }
-       double start = Collections.min(differenceList);
-       double end = Collections.max(differenceList);
-       double step = (end - start) / 10;
-       List<Range> rangeList = new LinkedList<>();
-       for(int i=0; i<10; i++){
-           rangeList.add(new Range(start, start + step));
-           start = start + step;
-       }
+        LinkedList<Double> differenceList = new LinkedList<>();
+        for (int i = 1; i < currencyList.size(); i++) {
+            differenceList.add(currencyList.get(i) - currencyList.get(i - 1));
+        }
+        double start = Collections.min(differenceList);
+        double end = Collections.max(differenceList);
+        double step = (end - start) / 10;
+        List<Range> rangeList = new LinkedList<>();
+        for (int i = 0; i < 10; i++) {
+            rangeList.add(new Range(start, start + step));
+            start = start + step;
+        }
 
-      for(Double value: differenceList){
-          for(Range range: rangeList){
-              if(range.contains(value)){
-                  int returnedValue = map.getOrDefault(range, 0);
-                  map.put(range, returnedValue + 1);
-              }
-          }
-      }
-      System.out.println(map);
-       return currencyList;
+        for (Double value : differenceList) {
+            for (Range range : rangeList) {
+                if (range.contains(value)) {
+                    int returnedValue = map.getOrDefault(range, 0);
+                    map.put(range, returnedValue + 1);
+                }
+            }
+        }
+        System.out.println(map);
+        return currencyList;
 
-    }
-
-    static public void saveToFile(String filename, Currency firstCurrency, Currency secondCurrency, LinkedHashMap<String, Double> firstMap, LinkedHashMap<String, Double> secondMap) throws IOException {
-        FileWriter csvFileWrite = new FileWriter(filename);
-        csvFileWrite.append("Date");
-        csvFileWrite.append(",");
-        csvFileWrite.append(firstCurrency.getCurrencyCode());
-        csvFileWrite.append(",");
-        csvFileWrite.append(secondCurrency.getCurrencyCode());
-        csvFileWrite.append("/n");
-
-    }
-
-
-    public static void main(String[] args) throws IOException {
-       getDistribution(Currency.getInstance("EUR"), Currency.getInstance("USD"), 1);
     }
 }
 
