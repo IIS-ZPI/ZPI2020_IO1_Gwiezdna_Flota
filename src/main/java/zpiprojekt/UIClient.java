@@ -1,8 +1,23 @@
 package zpiprojekt;
 
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+
+import zpiprojekt.nbp.data.RatesStatistics;
+
+import java.io.IOException;
+import java.util.Map;
+
+import zpiprojekt.nbp.ActionSessions;
+
+import java.io.IOException;
+import java.time.LocalDateTime;
+
 import java.util.Scanner;
 import java.io.InputStream;
 import java.util.Currency;
+import zpiprojekt.ActionDistribution;
 
 
 public class UIClient {
@@ -92,7 +107,17 @@ public class UIClient {
             return 3;
         }
 
-        // somefunction(firstCode, secondCode, timeInterval);
+        System.out.println("\n------------------------------------\n");
+        try{
+            ActionDistribution.getDistribution(firstCurrency, secondCurrency, timeInterval);
+            LinkedHashMap<Range, Integer> map = ActionDistribution.map;
+            for(Map.Entry<Range, Integer> entry : map.entrySet()){
+                System.out.println("Liczba wartości: " + entry.getValue() + " Zakres: " + entry.getKey());
+            }
+        } catch(Exception e){
+            System.out.println("Nie udało się pobrać danych.");
+        }
+        System.out.println("\n------------------------------------\n");
         return 0;
     }
 
@@ -132,8 +157,20 @@ public class UIClient {
             System.out.println("Zly przedział czasowy!");
             return 3;
         }
+        System.out.println("\n------------------------------------\n");
+        try{
+            RatesStatistics statistics = new RatesStatistics(currency,timeInterval);
+            statistics.getAllStatistics();
+            for (Map.Entry<String, String> entry : statistics.getAllStatistics().entrySet()) {
+                System.out.println(entry.getKey() + " : " + entry.getValue());
+            }
+            System.out.println("");
 
-        // somefunction(firstCode, timeInterval);
+        }catch(IOException e){
+            System.out.println("Błąd! Nieudane połączenie z NBP!");
+            return 4;
+        }
+        System.out.println("\n------------------------------------\n");
         return 0;
     }
 
@@ -172,7 +209,16 @@ public class UIClient {
             return 3;
         }
 
-        // somefunction(firstCode, timeInterval);
+        ActionSessions actionSessions = new ActionSessions(currency, timeInterval);
+        System.out.println("\n------------------------------------\n");
+        try {
+            System.out.println("Sesje wzrostowe: " + actionSessions.getGrowthSessions());
+            System.out.println("Sesje spadkowe: " + actionSessions.getDecreaseSessions());
+            System.out.println("Sesje bez zmian: " + actionSessions.getUnchangedSessions());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println("\n------------------------------------\n");
         return 0;
     }
 }
