@@ -1,19 +1,14 @@
 package zpiprojekt;
 
-
 import java.io.IOException;
 import java.util.LinkedHashMap;
 
-
 import zpiprojekt.nbp.data.RatesStatistics;
 
-import java.io.IOException;
 import java.util.Map;
 
 import zpiprojekt.nbp.ActionSessions;
 
-import java.io.IOException;
-import java.time.LocalDateTime;
 
 import java.util.Scanner;
 import java.io.InputStream;
@@ -86,10 +81,14 @@ public class UIClient {
             System.out.println("Niepoprawny kod!");
             return 1;
         }
-        if(firstCurrency.toString().equals("PLN") || secondCurrency.toString().equals("PLN"))
+        if(firstCurrency.toString().equals("PLN") || secondCurrency.toString().equals("PLN")){
+            System.out.println("Niepoprawny kod! Wybierz inną walutę niż PLN.");
             return 1;
-        if(firstCurrency.toString().equals(secondCurrency.toString()))
+        }
+        if(firstCurrency.toString().equals(secondCurrency.toString())){
+            System.out.println("Podano dwie takie same waluty!");
             return 1;
+        }
 
 
         System.out.println("Podaj przedział czasowy \n 1 - miesiac \n 2 - kwartał");
@@ -107,7 +106,17 @@ public class UIClient {
             return 3;
         }
 
-
+        System.out.println("\n------------------------------------\n");
+        try{
+            ActionDistribution.getDistribution(firstCurrency, secondCurrency, timeInterval);
+            LinkedHashMap<Range, Integer> map = ActionDistribution.map;
+            for(Map.Entry<Range, Integer> entry : map.entrySet()){
+                System.out.println("Liczba wartości: " + entry.getValue() + " Zakres: " + entry.getKey());
+            }
+        } catch(Exception e){
+            System.out.println("Nie udało się pobrać danych.");
+        }
+        System.out.println("\n------------------------------------\n");
         return 0;
     }
 
@@ -130,8 +139,10 @@ public class UIClient {
             System.out.println("Niepoprawny kod!");
             return 1;
         }
-        if(currency.toString().equals("PLN"))
+        if(currency.toString().equals("PLN")){
+            System.out.println("Niepoprawny kod! Wybierz inną walutę niż PLN.");
             return 1;
+        }
 
         showDataOptions();
 
@@ -147,6 +158,7 @@ public class UIClient {
             System.out.println("Zly przedział czasowy!");
             return 3;
         }
+        System.out.println("\n------------------------------------\n");
         try{
             RatesStatistics statistics = new RatesStatistics(currency,timeInterval);
             statistics.getAllStatistics();
@@ -159,8 +171,7 @@ public class UIClient {
             System.out.println("Błąd! Nieudane połączenie z NBP!");
             return 4;
         }
-
-        // somefunction(firstCode, timeInterval);
+        System.out.println("\n------------------------------------\n");
         return 0;
     }
 

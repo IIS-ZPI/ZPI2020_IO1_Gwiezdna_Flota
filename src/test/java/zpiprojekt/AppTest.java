@@ -6,20 +6,13 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import java.time.LocalDateTime;
-
 import java.util.*;
 
 import org.junit.Test;
-import zpiprojekt.nbp.data.RateTable;
 import zpiprojekt.nbp.data.RatesStatistics;
-import zpiprojekt.nbp.url.URLCreator;
 
 import java.util.Currency;
-import java.util.Scanner;
 
-import org.junit.Test;
-import zpiprojekt.nbp.ActionSessions;
 
 
 public class AppTest 
@@ -119,8 +112,6 @@ public class AppTest
     @Test
     public void testingRateTableStatistics(){
         try{
-
-
             RatesStatistics ratesStatistics = new RatesStatistics(Currency.getInstance("USD"),2);
             double median = ratesStatistics.getMedian();
             System.out.println("median: "+median);
