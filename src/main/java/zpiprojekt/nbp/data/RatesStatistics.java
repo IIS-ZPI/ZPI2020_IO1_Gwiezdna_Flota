@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -19,7 +18,7 @@ public class RatesStatistics {
 	public RatesStatistics(Currency currency,int interval)throws IOException{
 		this.currency = currency;
 		intervalToDate(interval);
-		String url = new URLCreator().setCurrency(currency).setDateFrom(dateFrom).setDateTo(LocalDateTime.now()).create();
+		String url = new URLCreator().setCurrency(this.currency).setDateFrom(dateFrom).setDateTo(LocalDateTime.now()).create();
 		this.table = NBPConnector.readJsonTable(url);
 	}
 	private void intervalToDate(int interval)

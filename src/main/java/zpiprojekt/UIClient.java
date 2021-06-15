@@ -2,22 +2,17 @@ package zpiprojekt;
 
 import java.io.IOException;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
 
 import zpiprojekt.nbp.data.RatesStatistics;
 
-import java.io.IOException;
 import java.util.Map;
 
 import zpiprojekt.nbp.ActionSessions;
 
-import java.io.IOException;
-import java.time.LocalDateTime;
 
 import java.util.Scanner;
 import java.io.InputStream;
 import java.util.Currency;
-import zpiprojekt.ActionDistribution;
 
 
 public class UIClient {
@@ -86,10 +81,14 @@ public class UIClient {
             System.out.println("Niepoprawny kod!");
             return 1;
         }
-        if(firstCurrency.toString().equals("PLN") || secondCurrency.toString().equals("PLN"))
+        if(firstCurrency.toString().equals("PLN") || secondCurrency.toString().equals("PLN")){
+            System.out.println("Niepoprawny kod! Wybierz inną walutę niż PLN.");
             return 1;
-        if(firstCurrency.toString().equals(secondCurrency.toString()))
+        }
+        if(firstCurrency.toString().equals(secondCurrency.toString())){
+            System.out.println("Podano dwie takie same waluty!");
             return 1;
+        }
 
 
         System.out.println("Podaj przedział czasowy \n 1 - miesiac \n 2 - kwartał");
@@ -140,8 +139,10 @@ public class UIClient {
             System.out.println("Niepoprawny kod!");
             return 1;
         }
-        if(currency.toString().equals("PLN"))
+        if(currency.toString().equals("PLN")){
+            System.out.println("Niepoprawny kod! Wybierz inną walutę niż PLN.");
             return 1;
+        }
 
         showDataOptions();
 

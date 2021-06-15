@@ -4,7 +4,6 @@ import zpiprojekt.nbp.data.Rate;
 import zpiprojekt.nbp.data.RateTable;
 import zpiprojekt.nbp.url.URLCreator;
 
-import java.io.FileWriter;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -12,7 +11,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 public class ActionDistribution {
-    static LinkedHashMap<Range, Integer> map = new LinkedHashMap();
+    static LinkedHashMap<Range, Integer> map = new LinkedHashMap<>();
 
     static private void initMap(List<Range> rangeList){
         for(Range range : rangeList)

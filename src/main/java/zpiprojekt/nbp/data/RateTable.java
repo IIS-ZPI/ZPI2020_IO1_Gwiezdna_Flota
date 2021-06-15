@@ -1,12 +1,5 @@
 package zpiprojekt.nbp.data;
-
-
 import java.util.*;
-import java.util.stream.Collectors;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-
 
 public class RateTable {
 	public String table;
