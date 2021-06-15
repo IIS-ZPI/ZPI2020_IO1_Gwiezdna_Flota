@@ -1,13 +1,9 @@
 package zpiprojekt;
 
-/**
- * Hello world!
- *
- */
-public class App 
-{
-    public static void main( String[] args )
-    {
+import java.io.IOException;
 
-    }
+public class App {
+	public static void main(String[] args) throws IOException {
+      UIClient.runUI();
+	}
 }
