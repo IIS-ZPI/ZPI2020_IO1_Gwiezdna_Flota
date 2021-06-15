@@ -1,23 +1,4 @@
-# This workflow will build a Java project with Maven
-# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
-
-name: Java CI with Maven
-
-on:
-  pull_request:
-    branches: [ develop, release, master ]
-
-jobs:
-  build:
-
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v2
-    - name: Set up JDK 11
-      uses: actions/setup-java@v2
-      with:
-        java-version: '11'
-        distribution: 'adopt'
-    - name: Build with Maven
-      run: mvn -B package --file pom.xml
+# System CI: 
+  https://github.com/IIS-ZPI/ZPI2020_IO1_Gwiezdna_Flota/actions
+# Backlog: 
+  https://github.com/IIS-ZPI/ZPI2020_IO1_Gwiezdna_Flota/projects

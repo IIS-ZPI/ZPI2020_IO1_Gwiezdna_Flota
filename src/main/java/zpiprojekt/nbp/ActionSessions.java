@@ -15,20 +15,34 @@ public class ActionSessions {
     private int growthSession;
     private int decreaseSession;
     private int unchangedSession;
-    public ActionSessions(Currency currency, LocalDateTime dateFrom)
+    public ActionSessions(Currency currency, int interval)
     {
         this.currency = currency;
-        this.dateFrom = dateFrom;
+        intervelToDate(interval);
     }
-
-    public void setCurrency(Currency currency) {
-        this.currency = currency;
-    }
-    public void setDateFrom(LocalDateTime dateFrom)
+    private void intervelToDate(int interval)
     {
-        this.dateFrom = dateFrom;
+        dateFrom = LocalDateTime.now();
+        switch (interval)
+        {
+            case 1:
+                dateFrom = dateFrom.minusWeeks(1);
+                break;
+            case 2:
+                dateFrom = dateFrom.minusWeeks(2);
+                break;
+            case 3:
+                dateFrom = dateFrom.minusMonths(1);
+                break;
+            case 4:
+                dateFrom = dateFrom.minusMonths(6);
+                break;
+            case 5:
+                dateFrom = dateFrom.minusYears(1);
+                break;
+        }
     }
-    public void calculate() throws IOException {
+    private void calculate() throws IOException {
         String url = new URLCreator().setCurrency(currency).setDateFrom(dateFrom).setDateTo(LocalDateTime.now()).create();
         RateTable table = NBPConnector.readJsonTable(url);
         Double prevValue = table.rates.get(0).mid;

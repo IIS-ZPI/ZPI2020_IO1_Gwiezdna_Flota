@@ -1,7 +1,20 @@
 package zpiprojekt;
 
+
 import java.io.IOException;
 import java.util.LinkedHashMap;
+
+
+import zpiprojekt.nbp.data.RatesStatistics;
+
+import java.io.IOException;
+import java.util.Map;
+
+import zpiprojekt.nbp.ActionSessions;
+
+import java.io.IOException;
+import java.time.LocalDateTime;
+
 import java.util.Scanner;
 import java.io.InputStream;
 import java.util.Currency;
@@ -134,6 +147,18 @@ public class UIClient {
             System.out.println("Zly przedział czasowy!");
             return 3;
         }
+        try{
+            RatesStatistics statistics = new RatesStatistics(currency,timeInterval);
+            statistics.getAllStatistics();
+            for (Map.Entry<String, String> entry : statistics.getAllStatistics().entrySet()) {
+                System.out.println(entry.getKey() + " : " + entry.getValue());
+            }
+            System.out.println("");
+
+        }catch(IOException e){
+            System.out.println("Błąd! Nieudane połączenie z NBP!");
+            return 4;
+        }
 
         // somefunction(firstCode, timeInterval);
         return 0;
@@ -174,7 +199,16 @@ public class UIClient {
             return 3;
         }
 
-        // somefunction(firstCode, timeInterval);
+        ActionSessions actionSessions = new ActionSessions(currency, timeInterval);
+        System.out.println("\n------------------------------------\n");
+        try {
+            System.out.println("Sesje wzrostowe: " + actionSessions.getGrowthSessions());
+            System.out.println("Sesje spadkowe: " + actionSessions.getDecreaseSessions());
+            System.out.println("Sesje bez zmian: " + actionSessions.getUnchangedSessions());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println("\n------------------------------------\n");
         return 0;
     }
 }
