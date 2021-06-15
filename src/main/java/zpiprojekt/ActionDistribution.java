@@ -14,7 +14,13 @@ import java.util.*;
 public class ActionDistribution {
     static LinkedHashMap<Range, Integer> map = new LinkedHashMap();
 
+    static private void initMap(List<Range> rangeList){
+        for(Range range : rangeList)
+            ActionDistribution.map.put(range, 0);
+    }
+
     static public LinkedList<Double> getDistribution(Currency firstCurrency, Currency secondCurrency, int timeInterval) throws IOException {
+        ActionDistribution.map.clear();
         LocalDateTime dateTo = LocalDateTime.now();
         LocalDateTime dateFrom = null;
         if (timeInterval == 1)
@@ -61,6 +67,8 @@ public class ActionDistribution {
             start = start + step;
         }
 
+        ActionDistribution.initMap(rangeList);
+
         for (Double value : differenceList) {
             for (Range range : rangeList) {
                 if (range.contains(value)) {
@@ -69,9 +77,7 @@ public class ActionDistribution {
                 }
             }
         }
-        System.out.println(map);
         return currencyList;
-
     }
 }
 
@@ -89,6 +95,6 @@ class Range{
     }
     @Override
     public String toString(){
-        return "(" + start + ", " + end + ")";
+        return "(" + String.format("%.5f", start) + ", " + String.format("%.5f", end) + ")";
     }
 }

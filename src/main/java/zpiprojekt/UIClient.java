@@ -1,9 +1,8 @@
 package zpiprojekt;
 
-
 import java.io.IOException;
 import java.util.LinkedHashMap;
-
+import java.util.LinkedList;
 
 import zpiprojekt.nbp.data.RatesStatistics;
 
@@ -18,6 +17,7 @@ import java.time.LocalDateTime;
 import java.util.Scanner;
 import java.io.InputStream;
 import java.util.Currency;
+import zpiprojekt.ActionDistribution;
 
 
 public class UIClient {
@@ -107,7 +107,17 @@ public class UIClient {
             return 3;
         }
 
-
+        System.out.println("\n------------------------------------\n");
+        try{
+            ActionDistribution.getDistribution(firstCurrency, secondCurrency, timeInterval);
+            LinkedHashMap<Range, Integer> map = ActionDistribution.map;
+            for(Map.Entry<Range, Integer> entry : map.entrySet()){
+                System.out.println("Liczba wartości: " + entry.getValue() + " Zakres: " + entry.getKey());
+            }
+        } catch(Exception e){
+            System.out.println("Nie udało się pobrać danych.");
+        }
+        System.out.println("\n------------------------------------\n");
         return 0;
     }
 
@@ -147,6 +157,7 @@ public class UIClient {
             System.out.println("Zly przedział czasowy!");
             return 3;
         }
+        System.out.println("\n------------------------------------\n");
         try{
             RatesStatistics statistics = new RatesStatistics(currency,timeInterval);
             statistics.getAllStatistics();
@@ -159,8 +170,7 @@ public class UIClient {
             System.out.println("Błąd! Nieudane połączenie z NBP!");
             return 4;
         }
-
-        // somefunction(firstCode, timeInterval);
+        System.out.println("\n------------------------------------\n");
         return 0;
     }
 
